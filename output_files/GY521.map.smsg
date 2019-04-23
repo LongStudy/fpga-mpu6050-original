@@ -1,0 +1,2 @@
+Info (10281): Verilog HDL Declaration information at cal_gy.v(10): object "GY" differs only in case from object "gy" in the same scope
+Warning (10268): Verilog HDL information at mpu6050.v(148): always construct contains both blocking and non-blocking assignments

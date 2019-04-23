@@ -1,0 +1,16 @@
+`include "ICC.v"
+module mpu_6050init()
+ICC ICC0(
+    clk20M,
+    reset,
+    iic_en,
+    cs_bit,
+    address,
+    write,
+    write_data,
+    read,
+    read_data,
+    scl,
+    sda,
+    done
+);

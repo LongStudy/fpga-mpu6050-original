@@ -1,0 +1,21 @@
+module tem_read(sda,scl,clk);
+input clk;
+output scl;
+inout sda;
+
+mpu_6050init mpuinit(read,iic_en,done,address,read_data,
+                     .clk20m(clk20m),.sda(sda0),.scl(scl),.t(t));
+IIC ICC(
+    .clk50M(clk50M),
+        .reset(reset),
+        .iic_en(iic_en),
+        .cs_bit(3'b000),
+        .address(address),
+        .write(write),
+        .write_data(write_data),
+        .read(read),
+        .read_data(read_data),
+        .scl(scl),
+        .sda(sda1),
+        .done(done)
+);

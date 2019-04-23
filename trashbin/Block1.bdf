@@ -1,0 +1,115 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "graphic" (version "1.4"))
+(connector
+	(text "tem1[7..0]" (rect 329 240 379 252)(font "Arial" ))
+	(pt 376 256)
+	(pt 320 256)
+	(bus)
+)
+(connector
+	(text "tem2[7..0]" (rect 331 256 381 268)(font "Arial" ))
+	(pt 376 272)
+	(pt 320 272)
+	(bus)
+)
+(connector
+	(text "accx1[7..0]" (rect 329 272 384 284)(font "Arial" ))
+	(pt 376 288)
+	(pt 320 288)
+	(bus)
+)
+(connector
+	(text "accx2[7..0]" (rect 336 288 391 300)(font "Arial" ))
+	(pt 320 304)
+	(pt 376 304)
+	(bus)
+)
+(connector
+	(text "accy1[7..0]" (rect 336 304 392 316)(font "Arial" ))
+	(pt 320 320)
+	(pt 376 320)
+	(bus)
+)
+(connector
+	(text "accy2[7..0]" (rect 343 320 399 332)(font "Arial" ))
+	(pt 320 336)
+	(pt 376 336)
+	(bus)
+)
+(connector
+	(text "accz1[7..0]" (rect 330 336 384 348)(font "Arial" ))
+	(pt 320 352)
+	(pt 376 352)
+	(bus)
+)
+(connector
+	(text "accz2[7..0]" (rect 338 352 392 364)(font "Arial" ))
+	(pt 320 368)
+	(pt 376 368)
+	(bus)
+)
+(connector
+	(text "gyrx1[7..0]" (rect 338 368 392 380)(font "Arial" ))
+	(pt 320 384)
+	(pt 376 384)
+	(bus)
+)
+(connector
+	(text "gyrx2[7..0]" (rect 338 384 392 396)(font "Arial" ))
+	(pt 320 400)
+	(pt 376 400)
+	(bus)
+)
+(connector
+	(text "gyry1[7..0]" (rect 339 400 394 412)(font "Arial" ))
+	(pt 320 416)
+	(pt 376 416)
+	(bus)
+)
+(connector
+	(text "gyry2[7..0]" (rect 329 416 384 428)(font "Arial" ))
+	(pt 320 432)
+	(pt 376 432)
+	(bus)
+)
+(connector
+	(text "gyrz1[7..0]" (rect 336 432 389 444)(font "Arial" ))
+	(pt 320 448)
+	(pt 376 448)
+	(bus)
+)
+(connector
+	(text "gyrz2[7..0]" (rect 336 448 389 460)(font "Arial" ))
+	(pt 320 464)
+	(pt 376 464)
+	(bus)
+)
+(connector
+	(text "sta[7..0]" (rect 351 464 392 476)(font "Arial" ))
+	(pt 320 480)
+	(pt 376 480)
+	(bus)
+)
+(connector
+	(pt 320 496)
+	(pt 408 496)
+)

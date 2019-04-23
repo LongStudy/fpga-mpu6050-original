@@ -1,0 +1,14 @@
+Partition Merge Status : Successful - Sat Apr 13 15:17:32 2019
+Quartus II 64-Bit Version : 13.1.0 Build 162 10/23/2013 SJ Full Version
+Revision Name : GY521
+Top-level Entity Name : GY521
+Family : Cyclone IV E
+Total logic elements : 1,160
+    Total combinational functions : 766
+    Dedicated logic registers : 847
+Total registers : 847
+Total pins : 6
+Total virtual pins : 0
+Total memory bits : 180,224
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0

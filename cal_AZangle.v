@@ -1,0 +1,161 @@
+module cal_AZangle(
+	   clk,
+		rst,
+		AX,
+		AZ,
+		AZangle,
+		is_read,
+		cal_done,
+		data,
+		angle
+		);
+	 input clk,rst,is_read;
+	 input [15:0]AX,AZ;
+	 output [31:0]AZangle,data,angle;//初始值
+	 output cal_done;
+	
+	 reg rcal_done;
+	 reg [31:0]rangle;
+	 reg [4:0]j;
+	 reg [7:0]clk_100,clk2,clk3;
+	 reg [31:0]axf,azf,r1,r2,r3,r4,r5;
+	 
+			    
+	 always @ ( posedge clk or negedge rst )
+		 if(!rst)
+		       begin 
+				 j<=5'd0;
+				 rcal_done<=1'b0;
+				 clk_100<=8'b0;
+				 clk2<=8'b0;
+				 clk3<=8'b0;
+				 axf<=32'b0;
+				 azf<=32'b0;
+				 r1<=32'b0;
+				 r2<=32'b0;
+				 r3<=32'b0;
+				 r4<=32'b0;
+				 r5<=1320;
+				 rangle<=32'b0;
+				 end
+		 else 
+		    case (j)
+			 
+			 0:                   //默认时，不开始计算,等待读取完成信号
+			 if(is_read) begin rcal_done<=1'b0;j<=j+1'b1;end
+			 else  j<=j;
+			 
+			 1:                   //ax整型转浮点，周期36，延迟100个clk
+			 if(clk_100==8'd0)  begin dataU1<=AX;clk_100<=1'b1;end
+			 else if(clk_100==8'd100)   begin axf<=result_itof;clk_100<=8'd0;j<=j+1'b1;end
+			 else 
+          clk_100<=clk_100+1'b1;
+			 
+			 2:                   //az整型转浮点，
+			 if(clk_100==8'd0)  begin dataU1<=AZ;clk_100<=1'b1;end
+			 else if(clk_100==8'd100)   begin azf<=result_itof;clk_100<=8'd0;j<=j+1'b1;end
+			 else 
+          clk_100<=clk_100+1'b1;
+			 
+			 3:           			//浮点数的除法
+			 if(clk_100==8'd0)  begin dataa<=axf;datab<=azf;clk_100<=1'b1;end
+			 else if(clk_100==8'd100)   begin r1<=result_div;clk_100<=8'd0;j<=j+1'b1;end
+			 else 
+          clk_100<=clk_100+1'b1;
+			
+			 4:              //反正切值算弧度 100CLK后读结果     
+			 if(clk_100==8'd0)  begin dataU3<=r1;clk_100<=1'b1;end
+			 else if(clk_100==8'd100)   begin r2<=result_ATAN;clk_100<=8'd0;j<=j+1'b1;end
+			 else 
+          clk_100<=clk_100+1'b1;
+			  
+			 5:            //乘以角度，得到R3，以后每次拿R3计算就好了
+			 if(clk_100==8'd0)  begin dataa4<=r2;datab4<=32'h42652EE0;clk_100<=1'b1;end
+		    else if(clk_100==8'd100)   begin r3<=result_MULT;clk_100<=8'd0;j<=j+1'b1;end
+			 else 
+          clk_100<=clk_100+1'b1;
+			  
+			 6:              //先测上100次，得到初值，不做控制,浮点数累加，从6直接到0；
+			 if(clk3==8'd100)    j<=j+1'b1;
+			 else if(clk_100==8'd0)  begin dataa5<=r3;datab5<=r4;clk_100<=1'b1;end
+			 else if(clk_100==8'd100)   begin r4<=result_ADD;clk3<=clk3+1'b1;clk_100<=8'd0;j<=5'd0;end
+			 else 
+              clk_100<=clk_100+1'b1;
+			 
+			 7:         	//R4除以100  作为初始角度
+			 if(clk2==8'd0)  begin dataa<=r4;datab<=32'h42C80000;clk2<=1'b1;end     //100要转换成浮点数
+			 else if(clk2==8'd100)   begin rangle<=result_div;clk2<=8'd101;j<=5'd8;end  //跳到最后一步!!!!!
+			 else if(clk2==8'd101)   j<=j+1'b1;                      //第一次运算时会计算6-7步，后面就跳过了。此时，R3是经平均后的R3，angle得到初值R3.
+			 else 
+              clk2<=clk2+1'b1;
+		   
+			 8:
+			 begin j<=1'b0;rcal_done<=1'b1;end 
+			 
+			 
+			 endcase 
+			 
+	 reg[15:0] dataU1;
+	 reg[31:0] dataa,datab,dataU3,dataa4,datab4,dataa5,datab5;
+	 wire [31:0]result_itof,result_div,result_MULT,result_ADD,result_ATAN;
+	 
+	 i16to32f U1(
+	    .clock(clk),
+	    .dataa(dataU1),
+	    .result(result_itof)
+	  ); 
+	
+	DIV1 U2(
+	   .clock(clk),
+	   .dataa(dataa),
+	   .datab(datab),
+    	.division_by_zero(),
+	   .nan(),
+	   .overflow(),
+	   .result(result_div),
+	   .underflow(),
+	   .zero()
+	   );
+	/*	
+	 DIV U2(
+	    .clock(clk),
+	    .dataa(dataa),//
+	    .datab(datab),//
+	    .result(result_div)
+	  ); 	 
+	*/
+	 ATAN U3(
+	   .clk_en(1),
+	   .clock(clk),
+	   .data(dataU3), 
+	   .result(result_ATAN)
+	 );
+	
+	 MULT U4(
+	   .clock(clk),
+	   .dataa(dataa4),
+	   .datab(datab4),
+	   .result(result_MULT)
+	);
+	
+	 ADD U5(
+	   .clock(clk),
+	   .dataa(dataa5),
+	   .datab(datab5),
+	   .result(result_ADD)
+		);
+    	
+    assign angle=rangle;
+	// assign angle=r2;
+	 
+	 assign cal_done=rcal_done;
+	 
+	 assign AZangle=r3;
+	// assign AZangle=r1;
+	 
+	 assign data=r3;
+	 //assign data=r2[31:24];
+	 
+
+	
+endmodule 
